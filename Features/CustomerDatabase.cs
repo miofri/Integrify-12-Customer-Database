@@ -22,10 +22,6 @@ namespace Customer_Database
         {
             _customers = new List<Customer>();
             _fileHelperInstance = FileHelper.Instance;
-            // _fileHelperInstance
-            //     .ReadExistingDataFromCsv("default.csv")
-            //     .ToList()
-            //     .ForEach(c => _customers.Add(c));
         }
 
         public bool AddCustomer(Customer newCustomer)
