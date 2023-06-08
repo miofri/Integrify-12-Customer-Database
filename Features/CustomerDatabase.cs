@@ -10,6 +10,7 @@ namespace Customer_Database
     {
         private List<Customer> _customers;
         private static readonly CustomerDatabase _instance = new CustomerDatabase();
+        private FileHelper _fileHelperInstance;
         public static CustomerDatabase Instance
         {
             get { return _instance; }
@@ -18,6 +19,7 @@ namespace Customer_Database
         private CustomerDatabase()
         {
             _customers = new List<Customer>();
+            _fileHelperInstance = FileHelper.Instance;
         }
 
         public bool AddCustomer(Customer newCustomer)
@@ -29,15 +31,20 @@ namespace Customer_Database
             }
             _customers.Add(newCustomer);
             Console.WriteLine($"Customer {newCustomer.FirstName} {newCustomer.LastName} added.\n");
+            _fileHelperInstance.AddToCSV(newCustomer);
             return true;
         }
 
-        public void UpdateCustomer(Customer customerToUpdate, System.Guid idToChange)
+        public void UpdateCustomer(Customer replacementCustomer, System.Guid idToChange)
         {
             try
             {
                 var cusToChangeIndex = _customers.FindIndex(id => idToChange == id.GetUserId);
-                _customers[cusToChangeIndex] = customerToUpdate;
+                Console.WriteLine(
+                    $"Updated customer {_customers[cusToChangeIndex].FirstName} {_customers[cusToChangeIndex].LastName} into {replacementCustomer.FirstName} {replacementCustomer.LastName}\n"
+                );
+                _customers[cusToChangeIndex] = replacementCustomer;
+                _fileHelperInstance.UpdateOrDeleteFromCSV(_customers);
             }
             catch (ArgumentNullException)
             {
@@ -53,7 +60,11 @@ namespace Customer_Database
                 var cusToDeleteIndex = _customers.FindIndex(
                     customer => customer.GetUserId == idToDelete
                 );
+                Console.WriteLine(
+                    $"\nDeleted customer {_customers[cusToDeleteIndex].FirstName} {_customers[cusToDeleteIndex].LastName}\n"
+                );
                 _customers.RemoveAt(cusToDeleteIndex);
+                _fileHelperInstance.UpdateOrDeleteFromCSV(_customers);
                 return true;
             }
             catch (ArgumentNullException)
@@ -70,6 +81,7 @@ namespace Customer_Database
 
         public void PrintAllCustomers()
         {
+            Console.WriteLine("=== Printing all customers ===");
             Console.WriteLine(
                 string.Join(
                     '\n',

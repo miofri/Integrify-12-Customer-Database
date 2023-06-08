@@ -6,10 +6,15 @@ public class Program
 {
     static void Main()
     {
+        string _csvPath = "customers.csv";
+        //empties file
+        File.WriteAllText(_csvPath, string.Empty);
+
         var cus1 = new Customer("address1", "Friidu", "Kesuma", "friidu@mail.com");
         var cus2 = new Customer("address2", "Friidu", "Mio", "friidumio@mail.com");
         var cus3 = new Customer("address3", "Mio", "Kesuma", "mio@mail.com");
-        var cus4 = new Customer("address4", "Bab", "Kes", "mio@mail.com");
+        var cus4 = new Customer("address4", "Bab", "Kes", "babkes@mail.com");
+        var cus5 = new Customer("address5", "Kes", "Bab", "kesbab@mail.com");
 
         CustomerDatabase Database = CustomerDatabase.Instance;
         Database.AddCustomer(cus1);
@@ -22,6 +27,9 @@ public class Program
         // Console.WriteLine(
         //     string.Join('\n', searchResult.Select(c => $"{c.Address} {c.FirstName} {c.LastName}"))
         // );
+        Database.PrintAllCustomers();
+        Database.DeleteCustomer(cus3.GetUserId);
+        Database.UpdateCustomer(cus5, cus1.GetUserId);
         Database.PrintAllCustomers();
     }
 }
