@@ -10,11 +10,11 @@ public class Program
         //empties file
         File.WriteAllText(_csvPath, string.Empty);
 
-        var cus1 = new Customer("address1", "Friidu", "Kesuma", "friidu@mail.com");
-        var cus2 = new Customer("address2", "Friidu", "Mio", "friidumio@mail.com");
-        var cus3 = new Customer("address3", "Mio", "Kesuma", "mio@mail.com");
-        var cus4 = new Customer("address4", "Bab", "Kes", "babkes@mail.com");
-        var cus5 = new Customer("address5", "Kes", "Bab", "kesbab@mail.com");
+        var cus1 = new Customer("address1", "friidu@mail.com", "Friidu", "Kesuma");
+        var cus2 = new Customer("address2", "friidumio@mail.com", "Friidu", "Mio");
+        var cus3 = new Customer("address3", "mio@mail.com", "Mio", "Kesuma");
+        var cus4 = new Customer("address4", "babkes@mail.com", "Bab", "Kes");
+        var cus5 = new Customer("address5", "kesbab@mail.com", "Kes", "Bab");
 
         CustomerDatabase Database = CustomerDatabase.Instance;
         Database.AddCustomer(cus1);

@@ -9,17 +9,30 @@ namespace Customer_Database
     {
         private System.Guid _id;
         public string Address;
+        public string Email;
         public string FirstName;
         public string LastName;
-        public string Email;
 
-        public Customer(string newAddress, string newFirstName, string newLastName, string newEmail)
+        public Customer(
+            string newAddress,
+            string newEmail,
+            string newFirstName,
+            string newLastName,
+            string newId = ""
+        )
         {
-            _id = Guid.NewGuid();
             Address = newAddress;
             FirstName = newFirstName;
             LastName = newLastName;
             Email = newEmail;
+            if (newId == "")
+            {
+                _id = Guid.NewGuid();
+            }
+            else
+            {
+                _id = new Guid(newId);
+            }
         }
 
         public System.Guid GetUserId
