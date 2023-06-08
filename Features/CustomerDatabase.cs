@@ -65,7 +65,7 @@ namespace Customer_Database
 
         public IEnumerable<Customer> EnumerableAllCustomers()
         {
-            return _customers;
+            return _instance._customers;
         }
 
         public void PrintAllCustomers()
@@ -79,6 +79,11 @@ namespace Customer_Database
                     )
                 )
             );
+        }
+
+        public IEnumerable<Customer> FindCustomerById(System.Guid customerId)
+        {
+            return _customers.Where(customer => customer.GetUserId == customerId);
         }
 
         public IEnumerable<Customer> FindCustomerBySearchTerm(string searchTerm)
