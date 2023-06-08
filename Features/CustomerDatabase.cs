@@ -9,8 +9,6 @@ namespace Customer_Database
     public class CustomerDatabase : IEnumerable<Customer>
     {
         private List<Customer> _customers;
-
-        // private List<Customer> _customersFromCsv;
         private static readonly CustomerDatabase _instance = new CustomerDatabase();
         private FileHelper _fileHelperInstance;
         public static CustomerDatabase Instance
