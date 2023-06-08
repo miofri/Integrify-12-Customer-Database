@@ -9,6 +9,8 @@ namespace Customer_Database
     public class CustomerDatabase : IEnumerable<Customer>
     {
         private List<Customer> _customers;
+
+        // private List<Customer> _customersFromCsv;
         private static readonly CustomerDatabase _instance = new CustomerDatabase();
         private FileHelper _fileHelperInstance;
         public static CustomerDatabase Instance
@@ -20,6 +22,10 @@ namespace Customer_Database
         {
             _customers = new List<Customer>();
             _fileHelperInstance = FileHelper.Instance;
+            // _fileHelperInstance
+            //     .ReadExistingDataFromCsv("default.csv")
+            //     .ToList()
+            //     .ForEach(c => _customers.Add(c));
         }
 
         public bool AddCustomer(Customer newCustomer)
@@ -31,7 +37,7 @@ namespace Customer_Database
             }
             _customers.Add(newCustomer);
             Console.WriteLine($"Customer {newCustomer.FirstName} {newCustomer.LastName} added.\n");
-            _fileHelperInstance.AddToCSV(newCustomer);
+            _fileHelperInstance.AddToCSV(newCustomer, "customers.csv");
             return true;
         }
 

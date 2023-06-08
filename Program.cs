@@ -6,9 +6,9 @@ public class Program
 {
     static void Main()
     {
-        string _csvPath = "customers.csv";
-        //empties file
-        File.WriteAllText(_csvPath, string.Empty);
+        CustomerDatabase Database = CustomerDatabase.Instance;
+        FileHelper FileHelper = FileHelper.Instance;
+        FileHelper.InitialiseCSV(Database);
 
         var cus1 = new Customer("address1", "friidu@mail.com", "Friidu", "Kesuma");
         var cus2 = new Customer("address2", "friidumio@mail.com", "Friidu", "Mio");
@@ -16,7 +16,6 @@ public class Program
         var cus4 = new Customer("address4", "babkes@mail.com", "Bab", "Kes");
         var cus5 = new Customer("address5", "kesbab@mail.com", "Kes", "Bab");
 
-        CustomerDatabase Database = CustomerDatabase.Instance;
         Database.AddCustomer(cus1);
         Database.AddCustomer(cus2);
         Database.AddCustomer(cus3);

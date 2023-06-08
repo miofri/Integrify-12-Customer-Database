@@ -3,17 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Customer_Database
 {
-    public class FileHelper
+    public class FileHelper : IEnumerable<Customer>
     {
-        private string _csvPath;
         private static readonly FileHelper _instance = new FileHelper();
-        private List<Customer> _customersFromCSV = new List<Customer>();
+        private string _csvPath;
+        private List<Customer> _customersFromCSV;
 
         private FileHelper()
         {
+            _customersFromCSV = new List<Customer>();
             _csvPath = "customers.csv";
         }
 
@@ -22,9 +24,16 @@ namespace Customer_Database
             get { return _instance; }
         }
 
-        public void AddToCSV(Customer customer)
+        public void InitialiseCSV(CustomerDatabase database)
         {
-            using var writer = new StreamWriter(_csvPath, append: true);
+            File.WriteAllText(_csvPath, string.Empty);
+            var defaultData = _instance.ReadExistingDataFromCsv("default.csv");
+            defaultData.ToList().ForEach(customer => database.AddCustomer(customer));
+        }
+
+        public void AddToCSV(Customer customer, string path)
+        {
+            using var writer = new StreamWriter(path, append: true);
             string line =
                 $"{customer.GetUserId},{customer.Address},{customer.Email},{customer.FirstName},{customer.LastName}";
             writer.WriteLine(line);
@@ -45,34 +54,27 @@ namespace Customer_Database
             Console.WriteLine("=== Data in CSV has been updated. ===\n");
         }
 
-        public List<Customer> ReadExistingDataFromCsv()
+        public IEnumerable<Customer> ReadExistingDataFromCsv(string path)
         {
-            if (File.Exists(_csvPath))
+            if (File.Exists(path))
             {
-                using var reader = new StreamReader(_csvPath);
+                using var reader = new StreamReader(path);
                 while (!reader.EndOfStream)
                 {
-                    try
+                    string line = reader.ReadLine() ?? "";
+                    string[] eachData = line.Split(',');
+
+                    if (eachData.Length == 5)
                     {
-                        string line = reader.ReadLine() ?? "";
-                        string[] eachLine = line.Split("\n");
-                        for (int i = 0; i < eachLine.Length; i++)
-                        {
-                            string[] eachData = line.Split(",");
-                            _customersFromCSV.Add(
-                                new Customer(
-                                    eachData[1],
-                                    eachData[2],
-                                    eachData[3],
-                                    eachData[4],
-                                    eachData[0]
-                                )
-                            );
-                        }
-                    }
-                    catch (OutOfMemoryException)
-                    {
-                        Console.WriteLine("Warning: Out of memory!");
+                        _customersFromCSV.Add(
+                            new Customer(
+                                eachData[1],
+                                eachData[2],
+                                eachData[3],
+                                eachData[4],
+                                eachData[0]
+                            )
+                        );
                     }
                 }
             }
@@ -101,6 +103,16 @@ namespace Customer_Database
                     );
                 }
             }
+        }
+
+        public IEnumerator<Customer> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
         }
     }
 }
