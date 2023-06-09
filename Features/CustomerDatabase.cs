@@ -50,7 +50,7 @@ namespace Customer_Database
             }
             catch (Exception ex)
             {
-                _exceptionHandler.NullHandler(ex.Message);
+                _exceptionHandler.FileHandler(ex.Message);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Customer_Database
             }
             catch (Exception ex)
             {
-                _exceptionHandler.NullHandler(ex.Message);
+                _exceptionHandler.FileHandler(ex.Message);
                 return false;
             }
         }
@@ -78,15 +78,22 @@ namespace Customer_Database
         public void PrintAllCustomers()
         {
             Console.WriteLine("=== Printing all customers ===");
-            Console.WriteLine(
-                string.Join(
-                    '\n',
-                    _customers.Select(
-                        customer =>
-                            $"{customer.Email} {customer.Address} {customer.FirstName} {customer.LastName}"
+            try
+            {
+                Console.WriteLine(
+                    string.Join(
+                        '\n',
+                        _customers.Select(
+                            customer =>
+                                $"{customer.Email} {customer.Address} {customer.FirstName} {customer.LastName}"
+                        )
                     )
-                )
-            );
+                );
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.FileHandler(ex.Message);
+            }
         }
 
         public IEnumerable<Customer> EnumerableAllCustomers()

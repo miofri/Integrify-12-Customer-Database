@@ -14,7 +14,7 @@ namespace Customer_Database
             get { return _instance; }
         }
 
-        public void NullHandler(string message)
+        public void FileHandler(string message)
         {
             Console.WriteLine($"Error: {message} Error code: 500");
         }
