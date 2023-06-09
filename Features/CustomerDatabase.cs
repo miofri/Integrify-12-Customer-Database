@@ -74,11 +74,6 @@ namespace Customer_Database
             }
         }
 
-        public IEnumerable<Customer> EnumerableAllCustomers()
-        {
-            return _instance._customers;
-        }
-
         public void PrintAllCustomers()
         {
             Console.WriteLine("=== Printing all customers ===");
@@ -91,6 +86,11 @@ namespace Customer_Database
                     )
                 )
             );
+        }
+
+        public IEnumerable<Customer> EnumerableAllCustomers()
+        {
+            return _instance._customers;
         }
 
         public IEnumerable<Customer> FindCustomerById(System.Guid customerId)

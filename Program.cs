@@ -8,7 +8,7 @@ public class Program
     {
         CustomerDatabase Database = CustomerDatabase.Instance;
         FileHelper FileHelper = FileHelper.Instance;
-        FileHelper.InitialiseCSV(Database);
+        FileHelper.InitialiseCustomersFromCSV(Database);
 
         var cus1 = new Customer("address1", "friidu@mail.com", "Friidu", "Kesuma");
         var cus2 = new Customer("address2", "friidumio@mail.com", "Friidu", "Mio");

@@ -24,7 +24,7 @@ namespace Customer_Database
             get { return _instance; }
         }
 
-        public void InitialiseCSV(CustomerDatabase database)
+        public void InitialiseCustomersFromCSV(CustomerDatabase database)
         {
             File.WriteAllText(_csvPath, string.Empty);
             var defaultData = _instance.ReadExistingDataFromCsv("default.csv");
@@ -52,6 +52,26 @@ namespace Customer_Database
                 writer.WriteLine(line);
             }
             Console.WriteLine("=== Data in CSV has been updated. ===\n");
+        }
+
+        public void PrintCustomersFromCSV()
+        {
+            if (_customersFromCSV.Count == 0)
+            {
+                Console.WriteLine(
+                    "No data has been extracted from CSV. Please call ReadExistingDataFromCSV first."
+                );
+            }
+            else
+            {
+                Console.WriteLine("=== Customer extracted from CSV ===");
+                foreach (Customer item in _customersFromCSV)
+                {
+                    Console.WriteLine(
+                        $"{item.GetUserId} {item.Address} {item.Email} {item.FirstName} {item.LastName}"
+                    );
+                }
+            }
         }
 
         public IEnumerable<Customer> ReadExistingDataFromCsv(string path)
@@ -83,26 +103,6 @@ namespace Customer_Database
                 Console.WriteLine("CSV file does not exist.");
             }
             return _instance._customersFromCSV;
-        }
-
-        public void PrintCustomersFromCSV()
-        {
-            if (_customersFromCSV.Count == 0)
-            {
-                Console.WriteLine(
-                    "No data has been extracted from CSV. Please call ReadExistingDataFromCSV first."
-                );
-            }
-            else
-            {
-                Console.WriteLine("=== Customer extracted from CSV ===");
-                foreach (Customer item in _customersFromCSV)
-                {
-                    Console.WriteLine(
-                        $"{item.GetUserId} {item.Address} {item.Email} {item.FirstName} {item.LastName}"
-                    );
-                }
-            }
         }
 
         public IEnumerator<Customer> GetEnumerator()
