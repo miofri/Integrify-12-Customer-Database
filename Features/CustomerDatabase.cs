@@ -103,17 +103,33 @@ namespace Customer_Database
 
         public IEnumerable<Customer> FindCustomerById(System.Guid customerId)
         {
-            return _customers.Where(customer => customer.GetUserId == customerId);
+            try
+            {
+                return _customers.Where(customer => customer.GetUserId == customerId);
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.FileHandler(ex.Message);
+                return Enumerable.Empty<Customer>();
+            }
         }
 
         public IEnumerable<Customer> FindCustomerBySearchTerm(string searchTerm)
         {
-            return _customers.Where(
-                customer =>
-                    customer.FirstName.Contains(searchTerm)
-                    || customer.LastName.Contains(searchTerm)
-                    || customer.Email.Contains(searchTerm)
-            );
+            try
+            {
+                return _customers.Where(
+                    customer =>
+                        customer.FirstName.Contains(searchTerm)
+                        || customer.LastName.Contains(searchTerm)
+                        || customer.Email.Contains(searchTerm)
+                );
+            }
+            catch (Exception ex)
+            {
+                _exceptionHandler.FileHandler(ex.Message);
+                return Enumerable.Empty<Customer>();
+            }
         }
 
         public IEnumerator<Customer> GetEnumerator()
