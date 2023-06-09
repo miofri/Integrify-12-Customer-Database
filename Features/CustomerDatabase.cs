@@ -11,6 +11,7 @@ namespace Customer_Database
         private List<Customer> _customers;
         private static readonly CustomerDatabase _instance = new CustomerDatabase();
         private FileHelper _fileHelperInstance;
+        private ExceptionHandler _exceptionHandler;
         public static CustomerDatabase Instance
         {
             get { return _instance; }
@@ -19,6 +20,7 @@ namespace Customer_Database
         private CustomerDatabase()
         {
             _customers = new List<Customer>();
+            _exceptionHandler = ExceptionHandler.Instance;
             _fileHelperInstance = FileHelper.Instance;
         }
 
@@ -46,10 +48,9 @@ namespace Customer_Database
                 _customers[cusToChangeIndex] = replacementCustomer;
                 _fileHelperInstance.UpdateOrDeleteFromCSV(_customers);
             }
-            catch (ArgumentNullException)
+            catch (Exception ex)
             {
-                Console.WriteLine("Customer not found!\n");
-                return;
+                _exceptionHandler.NullHandler(ex.Message);
             }
         }
 
@@ -67,9 +68,9 @@ namespace Customer_Database
                 _fileHelperInstance.UpdateOrDeleteFromCSV(_customers);
                 return true;
             }
-            catch (ArgumentNullException)
+            catch (Exception ex)
             {
-                Console.WriteLine("Customer not found!\n");
+                _exceptionHandler.NullHandler(ex.Message);
                 return false;
             }
         }
