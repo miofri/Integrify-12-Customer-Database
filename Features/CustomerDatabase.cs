@@ -12,6 +12,8 @@ namespace Customer_Database
         private static readonly CustomerDatabase _instance = new CustomerDatabase();
         private FileHelper _fileHelperInstance;
         private ExceptionHandler _exceptionHandler;
+        private Stack<Action> _undoHistory;
+        private Stack<Action> _redoHistory;
         public static CustomerDatabase Instance
         {
             get { return _instance; }
@@ -22,6 +24,8 @@ namespace Customer_Database
             _customers = new List<Customer>();
             _exceptionHandler = ExceptionHandler.Instance;
             _fileHelperInstance = FileHelper.Instance;
+            _undoHistory = new Stack<Action>();
+            _redoHistory = new Stack<Action>();
         }
 
         public bool AddCustomer(Customer newCustomer)
@@ -34,6 +38,10 @@ namespace Customer_Database
             _customers.Add(newCustomer);
             Console.WriteLine($"Customer {newCustomer.FirstName} {newCustomer.LastName} added.\n");
             _fileHelperInstance.AddToCSV(newCustomer, "customers.csv");
+
+            /*Undo/Redo*/
+            _undoHistory.Push(() => DeleteCustomer(newCustomer.GetUserId));
+            _redoHistory.Clear();
             return true;
         }
 
@@ -42,6 +50,15 @@ namespace Customer_Database
             try
             {
                 var cusToChangeIndex = _customers.FindIndex(id => idToChange == id.GetUserId);
+
+                var saveCustomerForUndo = new Customer(
+                    _customers[cusToChangeIndex].Address,
+                    _customers[cusToChangeIndex].Email,
+                    _customers[cusToChangeIndex].FirstName,
+                    _customers[cusToChangeIndex].LastName,
+                    _customers[cusToChangeIndex].GetUserId.ToString()
+                );
+
                 Console.WriteLine(
                     $"Updated customer {_customers[cusToChangeIndex].FirstName} {_customers[cusToChangeIndex].LastName} into {replacementCustomer.FirstName} {replacementCustomer.LastName}\n"
                 );
