@@ -13,7 +13,6 @@ namespace Customer_Database
         private FileHelper _fileHelperInstance;
         private ExceptionHandler _exceptionHandler;
         private Stack<Action> _undoHistory;
-        private Stack<Action> _redoHistory;
         public static CustomerDatabase Instance
         {
             get { return _instance; }
@@ -25,7 +24,6 @@ namespace Customer_Database
             _exceptionHandler = ExceptionHandler.Instance;
             _fileHelperInstance = FileHelper.Instance;
             _undoHistory = new Stack<Action>();
-            _redoHistory = new Stack<Action>();
         }
 
         public bool AddCustomer(Customer newCustomer)
