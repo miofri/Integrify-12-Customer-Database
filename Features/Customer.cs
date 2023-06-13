@@ -38,6 +38,7 @@ namespace Customer_Database
         public System.Guid GetUserId
         {
             get { return _id; }
+            set { _id = value; }
         }
     }
 }

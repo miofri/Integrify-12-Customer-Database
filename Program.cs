@@ -17,9 +17,12 @@ public class Program
         var cus5 = new Customer("address5", "kesbab@mail.com", "Kes", "Bab");
 
         Database.AddCustomer(cus1);
-        Database.Undo();
+        // Database.Undo();
+        // Database.Redo();
         Database.PrintAllCustomers();
-        Database.Redo();
+        Database.UpdateCustomer(cus2, cus1.GetUserId);
+        Database.PrintAllCustomers();
+        Database.Undo();
         Database.PrintAllCustomers();
 
         // Database.AddCustomer(cus2);

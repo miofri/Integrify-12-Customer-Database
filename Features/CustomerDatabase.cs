@@ -57,18 +57,20 @@ namespace Customer_Database
             {
                 var cusToChangeIndex = _customers.FindIndex(id => idToChange == id.GetUserId);
 
+                var savedCustomer = _customers[cusToChangeIndex];
                 var saveCustomerForUndo = new Customer(
-                    _customers[cusToChangeIndex].Address,
-                    _customers[cusToChangeIndex].Email,
-                    _customers[cusToChangeIndex].FirstName,
-                    _customers[cusToChangeIndex].LastName,
-                    _customers[cusToChangeIndex].GetUserId.ToString()
+                    savedCustomer.Address,
+                    savedCustomer.Email,
+                    savedCustomer.FirstName,
+                    savedCustomer.LastName,
+                    savedCustomer.GetUserId.ToString()
                 );
 
                 Console.WriteLine(
                     $"Updated customer {_customers[cusToChangeIndex].FirstName} {_customers[cusToChangeIndex].LastName} into {replacementCustomer.FirstName} {replacementCustomer.LastName}\n"
                 );
 
+                replacementCustomer.GetUserId = _customers[cusToChangeIndex].GetUserId;
                 _customers[cusToChangeIndex] = replacementCustomer;
                 _fileHelperInstance.UpdateOrDeleteFromCSV(_customers);
                 _undoHistory.Push(() => UpdateCustomer(saveCustomerForUndo, idToChange));
