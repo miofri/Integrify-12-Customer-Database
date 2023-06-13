@@ -14,9 +14,9 @@ namespace Customer_Database
             get { return _instance; }
         }
 
-        public void FileHandler(string message)
+        public void FileHandler(string message, string StackTrace)
         {
-            Console.WriteLine($"Error: {message} Error code: 500");
+            Console.WriteLine($"Error: {message} at {StackTrace}. Error code: 500");
         }
     }
 }

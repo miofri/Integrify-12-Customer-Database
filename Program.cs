@@ -17,18 +17,23 @@ public class Program
         var cus5 = new Customer("address5", "kesbab@mail.com", "Kes", "Bab");
 
         Database.AddCustomer(cus1);
-        Database.AddCustomer(cus2);
-        Database.AddCustomer(cus3);
-        Database.AddCustomer(cus4);
+        Database.Undo();
+        Database.PrintAllCustomers();
+        Database.Redo();
+        Database.PrintAllCustomers();
 
-        IEnumerable<Customer> searchResult = Database.FindCustomerBySearchTerm("Kesuma");
+        // Database.AddCustomer(cus2);
+        // Database.AddCustomer(cus3);
+        // Database.AddCustomer(cus4);
+
+        // IEnumerable<Customer> searchResult = Database.FindCustomerBySearchTerm("Kesuma");
         // Testing search:
         // Console.WriteLine(
         //     string.Join('\n', searchResult.Select(c => $"{c.Address} {c.FirstName} {c.LastName}"))
         // );
-        Database.PrintAllCustomers();
-        Database.DeleteCustomer(cus3.GetUserId);
-        Database.UpdateCustomer(cus5, cus1.GetUserId);
-        Database.PrintAllCustomers();
+        // Database.PrintAllCustomers();
+        // Database.DeleteCustomer(cus3.GetUserId);
+        // Database.UpdateCustomer(cus5, cus1.GetUserId);
+        // Database.PrintAllCustomers();
     }
 }
